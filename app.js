@@ -8,6 +8,24 @@ document.getElementById('mostrar-regras').addEventListener('click', function() {
     document.getElementById('modal-regras').style.display = 'block';
 });
 
+// Alternar entre idiomas no modal de regras
+document.getElementById('idioma-regras').addEventListener('change', function() {
+    const idiomaSelecionado = this.value;
+    document.querySelectorAll('.regras-texto').forEach(texto => {
+        texto.style.display = texto.getAttribute('data-lang') === idiomaSelecionado ? 'block' : 'none';
+    });
+});
+
+document.getElementById('anterior-jogador').addEventListener('click', () => {
+    jogadorAtual = (jogadorAtual - 1 + sacolas.length) % sacolas.length;
+    mostrarVezJogador();
+});
+
+document.getElementById('proximo-jogador').addEventListener('click', () => {
+    jogadorAtual = (jogadorAtual + 1) % sacolas.length;
+    mostrarVezJogador();
+});
+
 function iniciarJogo() {
     const numeroJogadores = parseInt(document.getElementById('numero-jogadores').value);
     if (numeroJogadores < 2 || numeroJogadores > 4) {
@@ -17,6 +35,7 @@ function iniciarJogo() {
 
     const sacolasDiv = document.getElementById('sacolas');
     const cartoesDiv = document.getElementById('cartoes');
+    const navegacaoJogadoresDiv = document.getElementById('navegacao-jogadores');
 
     sacolasDiv.innerHTML = '';
     cartoesDiv.innerHTML = '';
@@ -24,13 +43,17 @@ function iniciarJogo() {
     jogadorAtual = 0; // Reinicia o turno para o primeiro jogador
     jogoEmAndamento = true; // Reinicia o estado do jogo
 
+    // Tornar a navegação entre jogadores visível
+    navegacaoJogadoresDiv.style.display = 'flex';
+
     // Embaralhar e distribuir as sacolas e cartões
     embaralharArray(frutas);
 
-    // Criar sacolas, uma para cada jogador
+    // Criar sacolas e inserir jogadores na navegação
     for (let i = 0; i < numeroJogadores; i++) {
         const fruta = frutas[i];
         sacolas.push({ fruta, conteudo: [] });
+
         sacolasDiv.innerHTML += `
             <div class="sacola" id="sacola-${i}" data-fruta="${fruta}">
                 <strong>${fruta}</strong>
@@ -41,18 +64,17 @@ function iniciarJogo() {
     // Criar cartões
     for (let i = 0; i < frutas.length; i++) {
         const fruta = frutas[i];
-        cartoesDiv.innerHTML += `<div class="cartao" data-fruta="${fruta}">${fruta}</div>`;
+        cartoesDiv.innerHTML += `<div class="cartao" data-fruta="${fruta}"></div>`;
     }
 
     // Mostrar de quem é a vez
-    mostrarVezJogador(numeroJogadores);
+    mostrarVezJogador();
 
     // Adicionar eventos de clique aos cartões
     document.querySelectorAll('.cartao').forEach(cartao => {
         cartao.addEventListener('click', () => {
-            if (jogoEmAndamento) {
-                const fruta = cartao.getAttribute('data-fruta');
-                verificarCartao(fruta, cartao, numeroJogadores);
+            if (jogoEmAndamento && jogadorAtual === sacolas.findIndex(s => s.fruta === sacolas[jogadorAtual].fruta)) {
+                revelarCartao(cartao);
             }
         });
     });
@@ -76,31 +98,46 @@ function embaralharArray(array) {
     }
 }
 
-function verificarCartao(fruta, cartaoElement, numeroJogadores) {
-    const frutaInicial = fruta.slice(0, 2);
+function revelarCartao(cartaoElement) {
+    const fruta = cartaoElement.getAttribute('data-fruta');
+    cartaoElement.textContent = fruta;
+    cartaoElement.classList.add('revelado');
+
+    // Verificar se a fruta combina com a sacola do jogador atual
     const sacola = sacolas[jogadorAtual];
+    if (sacola.fruta.slice(0, 2) === fruta.slice(0, 2)) {
+        setTimeout(() => {
+            alert(`Descoberta: ${fruta}`);
+            sacola.conteudo.push(fruta);
+            document.getElementById(`cesta-${sacola.fruta}`).innerHTML += `<span class="fruta">${fruta}</span>`;
+            cartaoElement.remove();
 
-    if (sacola.fruta.slice(0, 2) === frutaInicial) {
-        sacola.conteudo.push(fruta);
-        document.getElementById(`cesta-${sacola.fruta}`).innerHTML += `<span class="fruta">${fruta}</span>`;
-        cartaoElement.remove();
+            // Verificar se o jogador atual já ganhou (acertou 3 vezes)
+            if (sacola.conteudo.length === 3) {
+                alert(`Jogador ${jogadorAtual + 1} venceu!`);
+                jogoEmAndamento = false;  // Finaliza o jogo
+                return;
+            }
 
-        // Declaração de vitória após um acerto
-        alert(`Jogador ${jogadorAtual + 1} venceu!`);
-        jogoEmAndamento = false;  // Finaliza o jogo
-        return;
+            // Passar a vez para o próximo jogador
+            jogadorAtual = (jogadorAtual + 1) % sacolas.length;
+            mostrarVezJogador();
+        }, 1000); // Exibe a descoberta por um segundo antes de mover para a cesta
     } else {
-        alert(`A fruta ${fruta} não combina com a sacola de ${sacola.fruta}.`);
-    }
+        setTimeout(() => {
+            cartaoElement.textContent = '';
+            cartaoElement.classList.remove('revelado');
 
-    // Passar a vez para o próximo jogador
-    jogadorAtual = (jogadorAtual + 1) % numeroJogadores;
-    mostrarVezJogador(numeroJogadores);
+            // Passar a vez para o próximo jogador
+            jogadorAtual = (jogadorAtual + 1) % sacolas.length;
+            mostrarVezJogador();
+        }, 1000); // Aguarda um segundo antes de virar de volta o cartão
+    }
 }
 
-function mostrarVezJogador(numeroJogadores) {
-    const vezJogadorDiv = document.getElementById('vez-jogador');
-    vezJogadorDiv.textContent = `Vez do Jogador ${jogadorAtual + 1}`;
+function mostrarVezJogador() {
+    const jogadorAtualSpan = document.getElementById('jogador-atual');
+    jogadorAtualSpan.textContent = `Jogador ${jogadorAtual + 1}`;
 
     // Esconde todas as cestas e mostra apenas a do jogador atual
     sacolas.forEach((_, index) => {

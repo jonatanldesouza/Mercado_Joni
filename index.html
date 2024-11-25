@@ -13,7 +13,14 @@
         <input type="number" id="numero-jogadores" min="2" max="4" value="2">
         <button id="comecar-jogo">Começar Jogo</button>
         <button id="mostrar-regras">Regras do Jogo</button>
-        <div id="vez-jogador"></div>
+        
+        <!-- Barra de navegação para jogadores -->
+        <div id="navegacao-jogadores" style="display: none;">
+            <button id="anterior-jogador">&#9664;</button>
+            <span id="jogador-atual"></span>
+            <button id="proximo-jogador">&#9654;</button>
+        </div>
+        
         <div id="sacolas">
             <!-- Sacolas de compras serão geradas aqui -->
         </div>
@@ -27,8 +34,26 @@
         <div class="modal-conteudo">
             <span class="fechar">&times;</span>
             <h2>Regras do Jogo</h2>
-            <p>O objetivo do jogo é completar sua sacola de compras antes dos demais jogadores. A cada turno, um jogador puxa um cartão de fruta e tenta colocá-lo na sua sacola. Se a fruta no cartão começar com a mesma sílaba que a fruta da sacola, ele pode adicionar o cartão à sacola. O primeiro jogador a acertar uma combinação de fruta ganha o jogo. Se um jogador errar, a vez passa para o próximo jogador.</p>
-            <p>Além disso, apenas a cesta do jogador atual é visível, para focar na vez de cada jogador.</p>
+            <select id="idioma-regras">
+                <option value="pt">Português</option>
+                <option value="es">Español</option>
+                <option value="en">English</option>
+            </select>
+            <p class="regras-texto" data-lang="pt">
+                O objetivo do jogo é completar sua sacola de compras antes dos demais jogadores. Cada jogador deve acertar três combinações de frutas. 
+                A cada turno, um jogador clica em um cartão para revelá-lo. Se a fruta no cartão corresponder à sacola, o jogador pode arrastá-la para 
+                a sacola. Caso contrário, o cartão é virado de volta e a vez passa para o próximo jogador.
+            </p>
+            <p class="regras-texto" data-lang="es" style="display: none;">
+                El objetivo del juego es completar tu bolsa de compras antes que los demás jugadores. Cada jugador debe acertar tres combinaciones de frutas. 
+                En cada turno, un jugador hace clic en una tarjeta para revelarla. Si la fruta en la tarjeta coincide con la bolsa, el jugador puede arrastrarla 
+                a la bolsa. De lo contrario, la tarjeta se gira de nuevo y el turno pasa al siguiente jugador.
+            </p>
+            <p class="regras-texto" data-lang="en" style="display: none;">
+                The objective of the game is to complete your shopping bag before the other players. Each player must get three fruit combinations right. 
+                Each turn, a player clicks on a card to reveal it. If the fruit on the card matches the bag, the player can drag it to the basket. 
+                Otherwise, the card is flipped back and the turn passes to the next player.
+            </p>
         </div>
     </div>
 

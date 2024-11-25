@@ -14,6 +14,32 @@ body {
     max-width: 800px;
 }
 
+#navegacao-jogadores {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+#navegacao-jogadores button {
+    background-color: #ddd;
+    border: none;
+    padding: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#navegacao-jogadores button:hover {
+    background-color: #ccc;
+}
+
+#jogador-atual {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0 15px;
+}
+
 #sacolas, #cartoes {
     display: flex;
     justify-content: center;
@@ -30,6 +56,15 @@ body {
     transition: background-color 0.3s;
     width: 100px;
     text-align: center;
+    position: relative;
+}
+
+.cartao {
+    background-color: #ccc;
+}
+
+.cartao.revelado {
+    background-color: #fff;
 }
 
 .sacola:hover, .cartao:hover {
@@ -37,7 +72,6 @@ body {
 }
 
 .sacola {
-    position: relative;
     min-height: 150px;
     display: none; /* Inicialmente esconde todas as cestas */
 }
@@ -63,12 +97,6 @@ button {
     font-size: 16px;
     margin-top: 20px;
     cursor: pointer;
-}
-
-#vez-jogador {
-    font-size: 18px;
-    margin-top: 10px;
-    font-weight: bold;
 }
 
 .modal {
