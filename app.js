@@ -1,4 +1,4 @@
-const frutas = ['CAQUI', 'CAJU', 'BANANA', 'BATATA', 'MELAO', 'MANGA', 'PERA', 'PESSEGO'];
+const frutas = ['CAQUI', 'CAJU', 'BANANA', 'BATATA', 'MELAO', 'MANGA', 'PERA', 'PESSEGO','BACIA', 'PESSOA', 'MEL', 'CASTANHA'];
 let sacolas = [];
 let jogadorAtual = 0; // Índice do jogador que está jogando atualmente
 let jogoEmAndamento = true;
@@ -115,6 +115,7 @@ function revelarCartao(cartaoElement) {
             // Verificar se o jogador atual já ganhou (acertou 3 vezes)
             if (sacola.conteudo.length === 3) {
                 alert(`Jogador ${jogadorAtual + 1} venceu!`);
+                soltarConfetes();
                 jogoEmAndamento = false;  // Finaliza o jogo
                 return;
             }
@@ -142,5 +143,13 @@ function mostrarVezJogador() {
     // Esconde todas as cestas e mostra apenas a do jogador atual
     sacolas.forEach((_, index) => {
         document.getElementById(`sacola-${index}`).style.display = index === jogadorAtual ? 'block' : 'none';
+    });
+}
+
+function soltarConfetes() {
+    confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 }
     });
 }

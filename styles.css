@@ -1,17 +1,38 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100vh;
     margin: 0;
-    background-color: #f0f0f0;
+    background-color: #f9f9f9;
 }
 
 #game {
     text-align: center;
-    max-width: 800px;
+    max-width: 900px;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+#inputs-apelidos {
+    margin: 10px 0;
+}
+
+#inputs-apelidos input {
+    padding: 10px;
+    margin-bottom: 10px;
+    width: calc(100% - 24px);
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 #navegacao-jogadores {
@@ -22,20 +43,22 @@ body {
 }
 
 #navegacao-jogadores button {
-    background-color: #ddd;
+    background-color: #007bff;
     border: none;
     padding: 10px;
     font-size: 20px;
+    color: #fff;
     cursor: pointer;
     transition: background-color 0.3s;
+    border-radius: 50%;
 }
 
 #navegacao-jogadores button:hover {
-    background-color: #ccc;
+    background-color: #0056b3;
 }
 
 #jogador-atual {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
     margin: 0 15px;
 }
@@ -48,36 +71,43 @@ body {
 }
 
 .sacola, .cartao {
-    border: 1px solid #333;
+    border: 2px solid #333;
     padding: 10px;
     margin: 5px;
     cursor: pointer;
     background-color: #fff;
-    transition: background-color 0.3s;
+    transition: transform 0.3s, background-color 0.3s;
     width: 100px;
+    height: 100px;
     text-align: center;
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    border-radius: 8px;
 }
 
 .cartao {
-    background-color: #ccc;
+    background-color: #f1f1f1;
 }
 
 .cartao.revelado {
-    background-color: #fff;
+    background-color: #e0ffe0;
 }
 
 .sacola:hover, .cartao:hover {
-    background-color: #e0e0e0;
+    transform: scale(1.05);
 }
 
 .sacola {
     min-height: 150px;
     display: none; /* Inicialmente esconde todas as cestas */
+    border-color: #007bff;
 }
 
 .cesta-conteudo {
-    border-top: 1px solid #333;
+    border-top: 2px solid #007bff;
     margin-top: 10px;
     padding-top: 5px;
     display: flex;
@@ -87,9 +117,11 @@ body {
 .fruta {
     display: inline-block;
     margin: 2px;
-    background: #c2f0c2;
-    padding: 5px;
+    background: #ffcc00;
+    color: #333;
+    padding: 5px 10px;
     border-radius: 4px;
+    font-weight: bold;
 }
 
 button {
@@ -97,6 +129,15 @@ button {
     font-size: 16px;
     margin-top: 20px;
     cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
 }
 
 .modal {
@@ -119,6 +160,7 @@ button {
     width: 80%;
     max-width: 500px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
 }
 
 .fechar {
